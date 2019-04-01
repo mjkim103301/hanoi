@@ -10,9 +10,7 @@
 using namespace std;
 static int number = 0;//몇번 움직였는지
 static queue<int**>q;
-void Sons(int **a);
-
-
+void Sons(int **a, int &index, int***G_List);
 
 void printarr(int **a) {
 	for (int i = 0; i < 3; i++) {
@@ -24,10 +22,37 @@ void printarr(int **a) {
 	cout << endl;
 }
 
+void print_G_List(int ***G_List, int index)
+{
+	printarr(G_List[index]);
+	/*
+	for (int j = 0; j < 3; j++) {
+	for (int k = 0; k < 3; k++) {
+	cout << G_List[index][j][k] << " ";
+	}
+	cout << endl;
+	}
+	*/
+	cout << endl;
+
+}
+
+void getG_List(int **a, int***G_List, int &index) {
+
+	index++;
+	G_List[index] = a;
+	//print_G_List(G_List, index);
+}
+
+
+
 int main()
 {
 	int **array = new int*[3];
 	int **a;
+
+	int ***G_List = new int **[101];
+	int index = -1;
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -39,25 +64,31 @@ int main()
 			array[i][j] = 0;
 
 
-
+	getG_List(array, G_List, index);//G_List 에 배열 넣기
+	print_G_List(G_List, index);//G_List의 배열을 프린트하기
 	q.push(array);
 
 	while (!q.empty())
 	{
 		a = q.front();
 		q.pop();
-		printarr(a);
-		for (int i = 1; i <= 2; i++)
+
+
+
+		//print_G_List(G_List, index);//G_List의 배열을 프린트하기
+
+
+		if (a[2][0] == 3 && a[2][1] == 2 && a[2][2] == 1)
 		{
-			if (a[i][0] == 3 && a[i][1] == 2 && a[i][2] == 1)
-			{
-				cout << "끝!!!" << endl;
-				return 0;
-			}
+			//printarr(a);
+			cout << "끝!!!" << endl;
+			return 0;
 		}
 
-		Sons(a);
-		//delete[] a;
+
+		Sons(a, index, G_List);
+
+
 	}
 }
 
@@ -73,7 +104,34 @@ int** copyarray(int **a)
 	}return copy;
 }
 
-void Sons(int **a)
+//같으면 false
+bool check_same(int ***G_List, int &index, int **copy)
+{
+	bool b = true; // 다르면 true
+	for (int i = 0; i <= index; i++)
+	{
+		if (b) {
+			b = false;
+
+			for (int j = 0; j < 3; j++)
+			{
+				for (int k = 0; k < 3; k++)
+				{
+					if (G_List[i][j][k] != copy[j][k])
+					{
+						b = true;
+					}
+				}
+			}
+		}
+		else {
+			return false;
+		}
+	}
+	return true;
+}
+
+void Sons(int **a, int &index, int ***G_List)
 
 {
 	int **copy = copyarray(a);
@@ -87,15 +145,29 @@ void Sons(int **a)
 			{
 				copy[(i + j) % 3][0] = copy[i][2];
 				copy[i][2] = 0;
-				q.push(copy);
+
+
+				if (check_same(G_List, index, copy))
+				{
+					getG_List(copy, G_List, index);//G_List 에 배열 넣기
+					print_G_List(G_List, index);
+					q.push(copy);
+
+				}
 				copy = copyarray(a);
+
+
+
+
+
 			}
 
 
 		}
 	}
 
-	//가운데 칸에 숫자가 있을때 바닥부분 빈공간으로 내림. 바닥부분이 비어있지 않을때 바닥 부분을 맨 위로 올릴수 있는지 판단함. 3의 위치를 옮길 수 있는지 판단함.
+	//가운데 칸에 숫자가 있을때 바닥부분 빈공간으로 내림. 바닥부분이 비어있지 않을때 바닥 부분을 맨 위로 올릴수 있는지 판단함.
+	//3의 위치를 옮길 수 있는지 판단함.
 	for (int i = 0; i <= 2; i++)
 	{
 		if (copy[i][2] == 0 && copy[i][1] != 0)
@@ -106,14 +178,27 @@ void Sons(int **a)
 				{
 					copy[(i + j) % 3][0] = copy[i][1];
 					copy[i][1] = 0;
-					q.push(copy);
+					if (check_same(G_List, index, copy))
+					{
+						getG_List(copy, G_List, index);//G_List 에 배열 넣기
+						print_G_List(G_List, index);
+						q.push(copy);
+
+
+					}
 					copy = copyarray(a);
 				}
 				else if (copy[i][1] > copy[(i + j) % 3][0] && copy[(i + j) % 3][0] != 0)
 				{
 					copy[i][2] = copy[(i + j) % 3][0];
 					copy[(i + j) % 3][0] = 0;
-					q.push(copy);
+					if (check_same(G_List, index, copy))
+					{
+						getG_List(copy, G_List, index);//G_List 에 배열 넣기
+						print_G_List(G_List, index);
+						q.push(copy);
+
+					}
 					copy = copyarray(a);
 				}
 				else if (copy[i][1] < copy[(i + j) % 3][0])
@@ -123,7 +208,14 @@ void Sons(int **a)
 						{
 							copy[k][0] = copy[(i + j) % 3][0];
 							copy[(i + j) % 3][0] = 0;
-							q.push(copy);
+							if (check_same(G_List, index, copy))
+							{
+								getG_List(copy, G_List, index);//G_List 에 배열 넣기
+								print_G_List(G_List, index);
+								q.push(copy);
+
+
+							}
 							copy = copyarray(a);
 						}
 						else
@@ -148,7 +240,14 @@ void Sons(int **a)
 				{
 					copy[(i + j) % 3][1] = copy[i][0];
 					copy[i][0] = 0;
-					q.push(copy);
+					if (check_same(G_List, index, copy))
+					{
+						getG_List(copy, G_List, index);//G_List 에 배열 넣기
+						print_G_List(G_List, index);
+						q.push(copy);
+
+
+					}
 					copy = copyarray(a);
 
 
