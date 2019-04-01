@@ -6,12 +6,16 @@
 
 #include <iostream>
 #include <queue>
-
+#include<stack>
 using namespace std;
-static int number = 0;//몇번 움직였는지
+
 static queue<int**>q;
 void Sons(int **a, int &index, int***G_List);
+static stack<int>s;
 
+int s_index = -1;//stack 의 인덱스
+int *s_arr = new int[101];//일차원 배열에 부모의 인덱스 값들을 넣음.
+int last;
 void printarr(int **a) {
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
@@ -24,24 +28,24 @@ void printarr(int **a) {
 
 void print_G_List(int ***G_List, int index)
 {
+	return;//안쓸꺼니까
 	printarr(G_List[index]);
-	/*
-	for (int j = 0; j < 3; j++) {
-	for (int k = 0; k < 3; k++) {
-	cout << G_List[index][j][k] << " ";
-	}
-	cout << endl;
-	}
-	*/
+
 	cout << endl;
 
 }
 
-void getG_List(int **a, int***G_List, int &index) {
+void getG_List(int **a, int***G_List, int &index, int &s_index) {
 
 	index++;
 	G_List[index] = a;
-	//print_G_List(G_List, index);
+	s_arr[index] = s_index;
+	//cout << s_index<<endl;
+	if (a[2][0] == 3 && a[2][1] == 2 && a[2][2] == 1)
+	{
+		last = index;
+	}
+
 }
 
 
@@ -49,10 +53,15 @@ void getG_List(int **a, int***G_List, int &index) {
 int main()
 {
 	int **array = new int*[3];
+
 	int **a;
 
+	int result;
+
 	int ***G_List = new int **[101];
-	int index = -1;
+	int index = -1;//G_List의 인덱스
+
+
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -64,7 +73,7 @@ int main()
 			array[i][j] = 0;
 
 
-	getG_List(array, G_List, index);//G_List 에 배열 넣기
+	getG_List(array, G_List, index, s_index);//G_List 에 배열 넣기
 	print_G_List(G_List, index);//G_List의 배열을 프린트하기
 	q.push(array);
 
@@ -72,15 +81,25 @@ int main()
 	{
 		a = q.front();
 		q.pop();
-
-
-
-		//print_G_List(G_List, index);//G_List의 배열을 프린트하기
-
+		s_index++;
 
 		if (a[2][0] == 3 && a[2][1] == 2 && a[2][2] == 1)
 		{
-			//printarr(a);
+			index = last;
+			while (s_arr[index] != -1)
+			{
+
+				s.push(s_arr[index]);
+				index = s_arr[index];
+				//cout << index << endl;
+			}
+			while (!s.empty())
+			{
+				result = s.top();
+				s.pop();
+				printarr(G_List[result]);
+			}
+			printarr(G_List[last]);
 			cout << "끝!!!" << endl;
 			return 0;
 		}
@@ -149,7 +168,7 @@ void Sons(int **a, int &index, int ***G_List)
 
 				if (check_same(G_List, index, copy))
 				{
-					getG_List(copy, G_List, index);//G_List 에 배열 넣기
+					getG_List(copy, G_List, index, s_index);//G_List 에 배열 넣기
 					print_G_List(G_List, index);
 					q.push(copy);
 
@@ -180,7 +199,7 @@ void Sons(int **a, int &index, int ***G_List)
 					copy[i][1] = 0;
 					if (check_same(G_List, index, copy))
 					{
-						getG_List(copy, G_List, index);//G_List 에 배열 넣기
+						getG_List(copy, G_List, index, s_index);//G_List 에 배열 넣기
 						print_G_List(G_List, index);
 						q.push(copy);
 
@@ -194,7 +213,7 @@ void Sons(int **a, int &index, int ***G_List)
 					copy[(i + j) % 3][0] = 0;
 					if (check_same(G_List, index, copy))
 					{
-						getG_List(copy, G_List, index);//G_List 에 배열 넣기
+						getG_List(copy, G_List, index, s_index);//G_List 에 배열 넣기
 						print_G_List(G_List, index);
 						q.push(copy);
 
@@ -210,7 +229,7 @@ void Sons(int **a, int &index, int ***G_List)
 							copy[(i + j) % 3][0] = 0;
 							if (check_same(G_List, index, copy))
 							{
-								getG_List(copy, G_List, index);//G_List 에 배열 넣기
+								getG_List(copy, G_List, index, s_index);//G_List 에 배열 넣기
 								print_G_List(G_List, index);
 								q.push(copy);
 
@@ -242,7 +261,7 @@ void Sons(int **a, int &index, int ***G_List)
 					copy[i][0] = 0;
 					if (check_same(G_List, index, copy))
 					{
-						getG_List(copy, G_List, index);//G_List 에 배열 넣기
+						getG_List(copy, G_List, index, s_index);//G_List 에 배열 넣기
 						print_G_List(G_List, index);
 						q.push(copy);
 
