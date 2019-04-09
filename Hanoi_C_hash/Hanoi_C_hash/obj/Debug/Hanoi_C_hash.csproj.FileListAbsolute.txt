@@ -1,0 +1,11 @@
+C:\Users\user\source\repos\Hanoi_C_hash\Hanoi_C_hash\bin\Debug\Hanoi_C_hash.exe
+C:\Users\user\source\repos\Hanoi_C_hash\Hanoi_C_hash\bin\Debug\Hanoi_C_hash.exe.config
+C:\Users\user\source\repos\Hanoi_C_hash\Hanoi_C_hash\obj\Debug\Hanoi_C_hash.Form1.resources
+C:\Users\user\source\repos\Hanoi_C_hash\Hanoi_C_hash\obj\Debug\Hanoi_C_hash.Form2.resources
+C:\Users\user\source\repos\Hanoi_C_hash\Hanoi_C_hash\obj\Debug\Hanoi_C_hash.Properties.Resources.resources
+C:\Users\user\source\repos\Hanoi_C_hash\Hanoi_C_hash\obj\Debug\Hanoi_C_hash.csproj.GenerateResource.cache
+C:\Users\user\source\repos\Hanoi_C_hash\Hanoi_C_hash\obj\Debug\Hanoi_C_hash.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\Hanoi_C_hash\Hanoi_C_hash\obj\Debug\Hanoi_C_hash.exe
+C:\Users\user\source\repos\Hanoi_C_hash\Hanoi_C_hash\obj\Debug\Hanoi_C_hash.pdb
+C:\Users\user\source\repos\Hanoi_C_hash\Hanoi_C_hash\bin\Debug\Hanoi_C_hash.pdb
+C:\Users\user\source\repos\Hanoi_C_hash\Hanoi_C_hash\obj\Debug\Hanoi_C_hash.csprojAssemblyReference.cache
