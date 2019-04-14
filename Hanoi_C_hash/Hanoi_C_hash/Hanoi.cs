@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing;
 namespace Hanoi_C_hash
 {
    class Hanoi
@@ -17,12 +18,26 @@ namespace Hanoi_C_hash
         int last = 0;//목표값의 인덱스
         int original = 0;//처음으로 목표값에 도달한 인덱스만을 받기 위해.
         int count = 0;
-        Form1 form;
+        /*================================================================*/
+        //윈폼을 위한 코드
+        Form1 form1;
+        Form2 form2;
+        int x1, x2, x3;
+        int n, m = 0, p = 0;
+        Bitmap bitmap;
+        Pen pen;
+        SolidBrush brush;
+        Timer timer1;
+        PictureBox pictureBox1;
+        Graphics graphics;
+        int[,] box;
+        char[,] move;
+
         public Hanoi()
         {
             DoubleBuffering d = DoubleBuffering.getinstance();
         }
-        public void set_number(object box, int n)
+        public void set_number(int n)
         {
             number = n;
         }
@@ -35,7 +50,140 @@ namespace Hanoi_C_hash
             count++;
             return count;
         }
+        //public int set_result()
+        //{
+        //    int result;
+        //    result = s.Pop();
+        //    return result;
+        //}
+        public void refr()
+        {
+            pictureBox1.Image = bitmap;
+        }
+        //public void set_box()//하노이의 초기 상태를 그리기 위해
+        //{
+        //    box = new int[3, number];
+        //    for (int i = 0; i < number; i++)
+        //        box[0, i] = number - i;
+        //}
+       
 
+        public void draw_disk(int [][]a)//하노이탑 디스크 그리는 함수: 8개까지 만듦.
+        {
+           
+            for(int i=0;i<3;i++)
+                for(int j=1;j<=number;j++)
+                {
+                    if(a[i][j]!=0)
+                    {
+                        switch (a[i][j])
+                        {
+                            case 1: brush = new SolidBrush(Color.Red);break;
+                            case 2: brush = new SolidBrush(Color.Pink); break;
+                            case 3: brush = new SolidBrush(Color.Yellow); break;
+                            case 4: brush = new SolidBrush(Color.Green); break;
+                            case 5: brush = new SolidBrush(Color.Blue); break;
+                            case 6: brush = new SolidBrush(Color.Brown); break;
+                            case 7: brush = new SolidBrush(Color.DarkOrange); break;
+                            case 8: brush = new SolidBrush(Color.DarkRed); break;
+                        }
+                        graphics.FillRectangle(brush, (i + 1) * 190 - 60 - (a[i][j]) * 10, 320 - (j-1) * 30, a[i][j] * 20, 30);
+                    }
+                }
+        }
+        public void timer1_Tick(object sender, EventArgs e)
+        {
+            graphics.Clear(Color.White);
+            //x1 = -1;
+            //x2 = -1;
+            //x3 = -1;
+
+            //하노이탑의 기둥과 바닥받침 그리기
+            graphics.DrawLine(pen, 60, 350, 200, 350);
+            graphics.DrawLine(pen, 250, 350, 390, 350);
+            graphics.DrawLine(pen, 440, 350, 580, 350);
+            graphics.DrawLine(pen, 130, 350, 130, 150);
+            graphics.DrawLine(pen, 320, 350, 320, 150);
+            graphics.DrawLine(pen, 510, 350, 510, 150);
+
+            //????
+            //for(int i=0;i<number;i++)
+            //    if(box[0,i]==0)
+            //    { x1 = i;
+            //        break;
+            //    }
+            //for(int i=0;i<number;i++)
+            //    if(box[1, i]==0)
+            //    {
+            //        x2 = i;
+            //        break;
+            //    }
+            //for (int i = 0; i < number; i++)
+            //    if (box[2, i] == 0)
+            //    {
+            //        x3 = i;
+            //        break;
+            //    }
+            //if (x1 == -1)
+            //    x1 = number;
+            //if (x2 == -1)
+            //    x2 = number;
+            //if (x3 == -1)
+            //    x3 = number;
+
+            //switch (move[0, p])
+            //{
+            //    case 'A':
+            //        switch (move[1, p])
+            //        {
+            //            case 'B':
+            //                box[1, x2] = box[0, x1 - 1];
+            //                box[0, x1 - 1] = 0;
+            //                break;
+            //            case 'C':
+            //                box[2, x3] = box[0, x1 - 1];
+            //                box[0, x1 - 1] = 0;
+            //                break;
+            //        }
+            //        break;
+
+            //    case 'B':
+            //        switch (move[1, p])
+            //        {
+            //            case 'A':
+            //                box[0, x1] = box[1, x2 - 1];
+            //                box[1, x1 - 1] = 0;
+            //                break;
+            //            case 'C':
+            //                box[2, x3] = box[1, x2 - 1];
+            //                box[1, x2 - 1] = 0;
+            //                break;
+            //        }
+            //        break;
+
+            //    case 'C':
+            //        switch (move[1, p])
+            //        {
+            //            case 'A':
+            //                box[0, x1] = box[2, x3 - 1];
+            //                box[2, x3 - 1] = 0;
+            //                break;
+            //            case 'B':
+            //                box[1, x2] = box[2, x3 - 1];
+            //                box[2, x3 - 1] = 0;
+            //                break;
+            //        }
+            //        break;
+            //}
+            //draw_disk();
+            //refr();
+            //p++;
+
+
+        }
+      
+
+        /*==================================================================*/
         void printarr(int[][] a)
         {
             for (int i = 0; i < 3; i++)
@@ -74,7 +222,7 @@ namespace Hanoi_C_hash
             }
         }
 
-        void main()
+        public void main()
         {
             //Console.Write("하노이탑의 수를  입력하세요: ");
 
@@ -130,12 +278,17 @@ namespace Hanoi_C_hash
                     while (s.Count != 0)
                     {
                         result = s.Pop();
+                        //result = s.Pop();
                         set_count();
-                       
+                        draw_disk(G_List[result]);
+                        refr();
                         //cout << count << "번째" << endl;
                         printarr(G_List[result]);
                     }
                     set_count();
+                    result = s.Pop();
+                    draw_disk(G_List[result]);
+                    refr();
                     //cout << count << "번째" << endl;
                     printarr(G_List[last]);
 

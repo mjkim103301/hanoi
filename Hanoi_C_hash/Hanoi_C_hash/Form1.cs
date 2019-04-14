@@ -42,9 +42,10 @@ namespace Hanoi_C_hash
 
         public void timer1_Tick(object sender, EventArgs e)
         {
-            
+           
             progressBar1.PerformStep();
-            계산시간_show.Text = timerCount.ToString();
+            ++timerCount;
+            움직이는횟수_show.Text = timerCount.ToString();
 
 
             // 타이머 중지 조건
@@ -54,7 +55,7 @@ namespace Hanoi_C_hash
             //    Show_btn.Show();
             //    Reset_btn.Show();
             //}
-            ++timerCount;
+            
             if ( hanoi.set_count() == Math.Pow(2, number))
             {                
                 timer.Stop();
@@ -66,7 +67,7 @@ namespace Hanoi_C_hash
         public void button1_Click(object sender, EventArgs e)
         {
             number = Convert.ToInt32(Check_txt.Text);
-            hanoi.set_number(Check_txt, number);
+            hanoi.set_number(number);
             label2.Show();
             progressBar1.Show();
          
@@ -97,9 +98,17 @@ namespace Hanoi_C_hash
             form2.ShowDialog();
         }
 
-        private void Reset_btn_Click(object sender, EventArgs e)
+        private void Reset_btn_Click(object sender, EventArgs e)//초기화시키는거 다시 해야함
         {
-            
+            Check_txt.Clear();
+            progressBar1.Visible = false;
+            label2.Visible = false;
+            움직이는횟수_show.Text="0";
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
